@@ -1,0 +1,46 @@
+version: '3'
+
+services:
+  nginx:
+    build: ./requirements/nginx
+    container_name: sfinoe_nginx
+    volumes:
+      - ./www:/var/www
+    depends_on:
+      - wordpress
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - front
+    restart: always
+  wordpress:
+    build: ./requirements/wordpress
+    container_name: sfinoe_wordpress
+    volumes:
+      - ./www:/var/www
+    restart: always
+    depends_on:
+      - mariadb
+    ports:
+      - 9000:9000
+    env_file:
+      - .env
+    networks:
+      - back
+      - front
+  mariadb:
+    build: ./requirements/mariadb
+    container_name: sfinoe_mariadb
+    volumes:
+      - ./mariadb:/var/lib/mysql
+    restart: always
+    ports:
+      - 3306:3306
+    env_file:
+      - .env
+    networks:
+      - back
+networks:
+  back:
+  front:
