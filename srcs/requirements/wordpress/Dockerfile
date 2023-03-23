@@ -2,9 +2,9 @@ FROM debian:buster
 
 RUN apt update;apt install -y php-fpm php-mysql wget
 
-RUN cd /tmp/ \
-	&& wget https://wordpress.org/latest.tar.gz \
-	&& tar -xvf latest.tar.gz
+RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
+	chmod +x wp-cli.phar && \
+	mv wp-cli.phar /usr/local/bin/wp
 
 COPY configure.sh /tmp/configure.sh
 

@@ -1,25 +1,27 @@
 #!/bin/sh
-set -x
 
 if [ -d "/var/lib/mysql/$MYSQL_DATABASE" ]; then 
     echo "Database already exists"
 else
     mysql_install_db
-    /etc/init.d/mysql start
+    service mysql start
 
-	# create root user
+    config="CREATE USER IF NOT EXISTS root@localhost IDENTIFIED BY '$MYSQL_ROOT_PASSWORD';
+SET PASSWORD FOR root@localhost = PASSWORD('$MYSQL_ROOT_PASSWORD');
+GRANT ALL ON *.* TO root@localhost WITH GRANT OPTION;
+CREATE USER IF NOT EXISTS root@'%' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD';
+SET PASSWORD FOR root@'%' = PASSWORD('$MYSQL_ROOT_PASSWORD');
+GRANT ALL ON *.* TO root@'%' WITH GRANT OPTION;
+CREATE USER IF NOT EXISTS $MYSQL_USER@'%' IDENTIFIED BY '$MYSQL_PASSWORD';
+SET PASSWORD FOR $MYSQL_USER@'%' = PASSWORD('$MYSQL_PASSWORD');
+CREATE USER IF NOT EXISTS $MYSQL_USER@'localhost' IDENTIFIED BY '$MYSQL_PASSWORD';
+SET PASSWORD FOR $MYSQL_USER@'localhost' = PASSWORD('$MYSQL_PASSWORD');
+CREATE DATABASE IF NOT EXISTS $MYSQL_DATABASE;
+GRANT ALL ON $MYSQL_DATABASE.* TO $MYSQL_USER@'%';" 
 
-	mysql -e "CREATE USER 'root'@'%' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD';"
-	mysql -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;"
-	mysql -e "FLUSH PRIVILEGES;"
+    echo "$config" > /tmp/db.sql
 
-	mysql -e "CREATE DATABASE $MYSQL_DATABASE;"
-	mysql -e "CREATE USER '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD';"
-	mysql -e "GRANT ALL PRIVILEGES ON $MYSQL_DATABASE.* TO '$MYSQL_USER'@'%';"
-	mysql -e "FLUSH PRIVILEGES;"
-
-
-    /etc/init.d/mysql stop
+	mysql -u root < /tmp/db.sql
 fi
 
-exec "$@"
+mysqld --bind-address=0.0.0.0

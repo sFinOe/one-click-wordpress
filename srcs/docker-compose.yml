@@ -2,45 +2,42 @@ version: '3'
 
 services:
   nginx:
+    depends_on:
+      - wordpress
     build: ./requirements/nginx
     container_name: sfinoe_nginx
     volumes:
-      - ./www:/var/www
-    depends_on:
-      - wordpress
+      - ../data:/var/www
     ports:
-      - 80:80
       - 443:443
     networks:
-      - front
-    restart: always
+      - Linker
+    restart: on-failure
   wordpress:
+    depends_on:
+      - mariadb
     build: ./requirements/wordpress
     container_name: sfinoe_wordpress
     volumes:
-      - ./www:/var/www
-    restart: always
-    depends_on:
-      - mariadb
+      - ../data:/var/www
+    restart: on-failure
     ports:
       - 9000:9000
     env_file:
       - .env
     networks:
-      - back
-      - front
+      - Linker
   mariadb:
     build: ./requirements/mariadb
     container_name: sfinoe_mariadb
     volumes:
-      - ./mariadb:/var/lib/mysql
-    restart: always
+      - ../data:/var/lib/mysql
+    restart: on-failure
     ports:
       - 3306:3306
     env_file:
       - .env
     networks:
-      - back
+      - Linker
 networks:
-  back:
-  front:
+  Linker:
