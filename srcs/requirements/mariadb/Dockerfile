@@ -9,7 +9,7 @@ RUN apt-get update && apt-get -y install mariadb-server sudo \
 
 EXPOSE 3306
 
-COPY configure.sh /tmp/configure.sh
+COPY tools/configure.sh /tmp/configure.sh
 RUN chmod +x /tmp/configure.sh
 
 ENTRYPOINT ["/tmp/configure.sh"]
