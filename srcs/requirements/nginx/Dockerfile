@@ -5,16 +5,17 @@ RUN apt update;apt install -y nginx openssl
 
 RUN mkdir /etc/nginx/certs
 
+# -nodes : generate key with no passphrase (password)
+# -x509 generate a self-signed ssl 
+#CSR stands for Certificate Signing Request.
+
 RUN mkdir -p /etc/ssl/certs && \
-	openssl req -new -newkey rsa:2048 -days 365 -nodes -x509 \
+	openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
 	-subj "/C=US/ST=State/L=City/O=Organization/CN=localhost" \
 	-keyout /etc/ssl/private/nginx-selfsigned.key \
-	-out /etc/ssl/certs/nginx-selfsigned.crt && \
-	openssl dhparam -out /etc/nginx/dhparam.pem 2048
+	-out /etc/ssl/certs/nginx-selfsigned.crt
 
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY sites-enabled /etc/nginx/sites-enabled
 
 CMD nginx -g 'daemon off;'
-
-EXPOSE 443

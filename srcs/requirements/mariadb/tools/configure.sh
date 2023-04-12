@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# mysql_install_db : is used to create the initial database and system tables for the MariaDB server.
+
 if [ -d "/var/lib/mysql/$MYSQL_DATABASE" ]; then 
     echo "Database already exists"
 else
