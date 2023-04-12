@@ -11,6 +11,8 @@ all: .env
 	echo "MYSQL_DATABASE=wp" >> srcs/.env
 	echo "MYSQL_USER=tnzoto" >> srcs/.env
 	echo "MYSQL_PASSWORD=1234" >> srcs/.env
+	echo "WP_USER_NORMAL=miniBig" >> srcs/.env
+	echo "WP_PASSWORD_NORMAL=123456" >> srcs/.env
 	echo "DB_HOST=mariadb" >> srcs/.env
 	echo "WP_URL=localhost" >> srcs/.env
 	echo "WP_TITLE=My WordPress" >> srcs/.env
