@@ -5,8 +5,9 @@ RUN apt update;apt install -y nginx openssl
 
 RUN mkdir /etc/nginx/certs
 
+# req -new : generate a new certificate request
 # -nodes : generate key with no passphrase (password)
-# -x509 generate a self-signed ssl 
+# -x509 generate a self-signed ssl  certificate
 #CSR stands for Certificate Signing Request.
 
 RUN mkdir -p /etc/ssl/certs && \

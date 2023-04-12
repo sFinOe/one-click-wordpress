@@ -7,7 +7,7 @@ services:
     build: ./requirements/nginx
     container_name: sfinoe_nginx
     volumes:
-      - ../data:/var/www
+      - /home/zkasmi/data:/var/www
     ports:
       - 443:443
     networks:
@@ -19,7 +19,7 @@ services:
     build: ./requirements/wordpress
     container_name: sfinoe_wordpress
     volumes:
-      - ../data:/var/www
+      - /home/zkasmi/data:/var/www
     restart: on-failure
     ports:
       - 9000:9000
@@ -31,7 +31,7 @@ services:
     build: ./requirements/mariadb
     container_name: sfinoe_mariadb
     volumes:
-      - ../data:/var/lib/mysql
+      - /home/zkasmi/data:/var/lib/mysql
     restart: on-failure
     ports:
       - 3306:3306

@@ -14,6 +14,6 @@ all: .env
 	echo "DB_HOST=mariadb" >> srcs/.env
 	echo "WP_URL=localhost" >> srcs/.env
 	echo "WP_TITLE=My WordPress" >> srcs/.env
-	echo "WP_USER=admin" >> srcs/.env
+	echo "WP_USER=bigBro" >> srcs/.env
 	echo "WP_PASSWORD=jyEcC@4dC@1" >> srcs/.env
 	echo "WP_EMAIL=mail@mail.com" >> srcs/.env
