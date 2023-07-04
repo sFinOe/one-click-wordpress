@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 services:
   nginx:
@@ -7,37 +7,54 @@ services:
     build: ./requirements/nginx
     container_name: sfinoe_nginx
     volumes:
-      - /home/zkasmi/data:/var/www
+      - wp:/var/www/html
     ports:
       - 443:443
     networks:
-      - Linker
+      - sfinoe_net
     restart: on-failure
+
   wordpress:
     depends_on:
       - mariadb
     build: ./requirements/wordpress
     container_name: sfinoe_wordpress
     volumes:
-      - /home/zkasmi/data:/var/www
+      - wp:/var/www/html
     restart: on-failure
-    ports:
-      - 9000:9000
     env_file:
       - .env
     networks:
-      - Linker
+      - sfinoe_net
+
   mariadb:
     build: ./requirements/mariadb
     container_name: sfinoe_mariadb
     volumes:
-      - /home/zkasmi/data:/var/lib/mysql
+      - db:/var/lib/mysql
     restart: on-failure
-    ports:
-      - 3306:3306
     env_file:
       - .env
     networks:
-      - Linker
+      - sfinoe_net
+
 networks:
-  Linker:
+  sfinoe_net: # Name of network
+    name: sfinoe_net # Name of network
+    driver: bridge # Host, none, bridge, overlay
+
+volumes:
+  wp:
+    driver: local # local, nfs, s3, azure, gce, rbd, rexray, vsphere, scaleio, flocker, portworx, btrfs, convoy, glusterfs, netapp, infinidat, quobyte, cephfs, cinder, flocker, gcepd, iscsi, nfs, rbd, vsphere
+    name: wp # Name of volume
+    driver_opts: # Driver options
+      type: none # none, nfs, s3, azure, gce, rbd, rexray, vsphere, scaleio, flocker, portworx, btrfs, convoy, glusterfs, netapp, infinidat, quobyte, cephfs, cinder, flocker, gcepd, iscsi, nfs, rbd, vsphere
+      o: bind # bind, uid, gid, mode
+      device: /home/sfinoe/data/wordpress # Path on host
+  db:
+    driver: local
+    name: db
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/sfinoe/data/mariadb

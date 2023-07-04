@@ -1,12 +1,13 @@
 FROM debian:buster
 
-#Install necessary package
-RUN apt-get update && apt-get -y install mariadb-server sudo \
-	&& mkdir -p /var/run/mysqld \
-	&& chown -R mysql:mysql /var/run/mysqld \
-	&& chmod 777 /var/run/mysqld
+RUN apt-get update && apt-get install -y mariadb-server
 
-COPY tools/configure.sh /tmp/configure.sh
-RUN chmod +x /tmp/configure.sh
+EXPOSE 3306
 
-ENTRYPOINT ["/tmp/configure.sh"]
+COPY ./conf/50-server.cnf /etc/mysql/mariadb.conf.d/
+COPY ./tools /var/www/
+
+RUN service mysql start && \
+	mysql < /var/www/initial_db.sql
+
+CMD ["mysqld"]

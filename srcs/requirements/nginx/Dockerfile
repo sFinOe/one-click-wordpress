@@ -19,4 +19,6 @@ RUN mkdir -p /etc/ssl/certs && \
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY sites-enabled /etc/nginx/sites-enabled
 
-CMD nginx -g 'daemon off;'
+CMD ["nginx", "-g", "daemon off;"]
+
+# using daemon off; allows nginx to run in the foreground and not as a daemon because containers exit when the process running in the foreground exits.

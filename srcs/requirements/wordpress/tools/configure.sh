@@ -1,14 +1,12 @@
-# !/bin/bash
+#!/bin/bash
 
-sleep 40
+if [ ! -f /var/www/html/wp-config.php ]; then
+	cd /var/www/html;
+	wp core download --allow-root;
+	mv /tmp/wp-config.php /var/www/html/
+	wp core install --allow-root --url=zkasmi.42.fr --title=${WP_TITLE} --admin_user=${WP_ADMIN_LOGIN} --admin_password=${WP_ADMIN_PASSWORD} --admin_email=${WP_ADMIN_EMAIL}
+	wp user create --allow-root ${WP_USER_LOGIN} ${WP_USER_EMAIL} --user_pass=${WP_USER_PASSWORD};
+	echo "Wordpress: set up!";
+fi
 
-wp core download --locale=en_US --path=/tmp/wordpress --allow-root
-wp config create --dbname=$MYSQL_DATABASE --dbuser=$MYSQL_USER --dbpass=$MYSQL_PASSWORD --dbhost=$DB_HOST --path=/tmp/wordpress --allow-root --skip-check
-wp core install --url="$WP_URL" --title="$WP_TITLE" --admin_user="$WP_USER" --admin_password="$WP_PASSWORD" --admin_email="$WP_EMAIL" --path=/tmp/wordpress --allow-root
-
-# Add the following to create a new normal user:
-wp user create "$WP_USER_NORMAL" normal@mail.com --role=author --user_pass="$WP_PASSWORD_NORMAL" --path=/tmp/wordpress --allow-root
-
-
-
-mkdir -p /var/www/wordpress && chown -R www-data:www-data /var/www/wordpress && cp -r /tmp/wordpress/* /var/www/wordpress/ && php-fpm7.3 -F
+exec "$@"
