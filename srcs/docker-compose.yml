@@ -39,18 +39,18 @@ services:
       - sfinoe_net
 
 networks:
-  sfinoe_net: # Name of network
-    name: sfinoe_net # Name of network
+  sfinoe_net:
+    name: sfinoe_net
     driver: bridge # Host, none, bridge, overlay
 
 volumes:
   wp:
-    driver: local # local, nfs, s3, azure, gce, rbd, rexray, vsphere, scaleio, flocker, portworx, btrfs, convoy, glusterfs, netapp, infinidat, quobyte, cephfs, cinder, flocker, gcepd, iscsi, nfs, rbd, vsphere
-    name: wp # Name of volume
-    driver_opts: # Driver options
-      type: none # none, nfs, s3, azure, gce, rbd, rexray, vsphere, scaleio, flocker, portworx, btrfs, convoy, glusterfs, netapp, infinidat, quobyte, cephfs, cinder, flocker, gcepd, iscsi, nfs, rbd, vsphere
+    driver: local # local, nfs, s3
+    name: wp
+    driver_opts:
+      type: none # none, nfs, s3
       o: bind # bind, uid, gid, mode
-      device: /home/sfinoe/data/wordpress # Path on host
+      device: /home/sfinoe/data/wordpress
   db:
     driver: local
     name: db
