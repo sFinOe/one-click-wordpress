@@ -50,11 +50,11 @@ volumes:
     driver_opts:
       type: none # none, nfs, s3
       o: bind # bind, uid, gid, mode
-      device: /home/sfinoe/data/wordpress
+      device: /home/zkasmi/data/wordpress
   db:
     driver: local
     name: db
     driver_opts:
       type: none
       o: bind
-      device: /home/sfinoe/data/mariadb
+      device: /home/zkasmi/data/mariadb
