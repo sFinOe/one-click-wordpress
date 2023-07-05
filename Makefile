@@ -1,6 +1,6 @@
 # Makefile
 
-HOME = "/home/sfinoe"
+HOME = /home/zkasmi
 
 
 all:
