@@ -6,6 +6,11 @@ HOME = /home/zkasmi
 all:
 	@mkdir -p $(HOME)/data/wordpress
 	@mkdir -p $(HOME)/data/mariadb
+	@docker-compose -f ./srcs/docker-compose.yml up
+
+build:
+	@mkdir -p $(HOME)/data/wordpress
+	@mkdir -p $(HOME)/data/mariadb
 	@docker-compose -f ./srcs/docker-compose.yml up --build
 
 down :
